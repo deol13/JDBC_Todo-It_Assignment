@@ -1,4 +1,4 @@
-package se.lexicon.Interfaces;
+package se.lexicon.Data;
 
 import se.lexicon.Model.Person;
 import se.lexicon.Model.TodoItem;

@@ -1,16 +1,17 @@
 package se.lexicon.Model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class TodoItem {
     private int todo_id;
     private String title;
     private String description;
-    private LocalDate deadline;
+    private Date deadline;
     private boolean done;
     private int assignee_id;
 
-    public TodoItem(int todo_id, String title, String description, LocalDate deadline, boolean done, int assignee_id) {
+    public TodoItem(int todo_id, String title, String description, Date deadline, boolean done, int assignee_id) {
         this.todo_id = todo_id;
         this.title = title;
         this.description = description;
@@ -19,6 +20,13 @@ public class TodoItem {
         this.assignee_id = assignee_id;
     }
 
+    public TodoItem(String title, String description, Date deadline, boolean done, int assignee_id) {
+        this.title = title;
+        this.description = description;
+        this.deadline = deadline;
+        this.done = done;
+        this.assignee_id = assignee_id;
+    }
     public int getTodo_id() {
         return todo_id;
     }
@@ -43,11 +51,11 @@ public class TodoItem {
         this.description = description;
     }
 
-    public LocalDate getDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDate deadline) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 
