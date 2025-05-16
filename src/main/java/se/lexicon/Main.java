@@ -23,6 +23,35 @@ public class Main {
         //personUpdate();
         //personDelete();
 
+        //todoItemCreate();
+        //todoItemFindAll();
+        //todoItemFindById();
+        todoItemFindByStatus();
+    }
+
+    public static void todoItemCreate(){
+        try{
+            TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter a title:");
+            String title = scanner.nextLine();
+            System.out.println("Enter a description:");
+            String desc = scanner.nextLine();
+            System.out.println("Done or not?:");
+            String strDone = scanner.nextLine();
+            boolean done = strDone.equalsIgnoreCase("done") ? true : false;
+            System.out.println("Person id:");
+            int personId = scanner.nextInt();
+
+            LocalDate deadline = LocalDate.now();
+            TodoItem savedItem = items.create(new TodoItem(title, desc, Date.valueOf(deadline), done, personId));
+
+            System.out.println("savedItem = " + savedItem.getTitle());
+            System.out.println("Operation is Done!");
+        }catch (SQLException e) {
+            System.out.println("MySQL DB Connection Failed.");
+        }
     }
 
     public static void todoItemFindAll() {
@@ -49,6 +78,24 @@ public class Main {
             TodoItem savedItem = items.findById(id);
 
             System.out.println("savedPerson = " + savedItem.getTodo_id() + ": " +  savedItem.getTitle());
+            System.out.println("Operation is Done!");
+        }catch (SQLException e) {
+            System.out.println("MySQL DB Connection Failed.");
+        }
+    }
+
+    public static void todoItemFindByStatus(){
+        try{
+            TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter done or not?:");
+            String strDone = scanner.nextLine();
+            boolean done = strDone.equalsIgnoreCase("done") ? true : false;
+
+            List<TodoItem> foundItems = items.findByDoneStatus(done).stream().toList();
+
+            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
