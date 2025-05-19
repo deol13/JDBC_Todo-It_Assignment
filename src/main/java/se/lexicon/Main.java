@@ -26,7 +26,13 @@ public class Main {
         //todoItemCreate();
         //todoItemFindAll();
         //todoItemFindById();
-        todoItemFindByStatus();
+        //todoItemFindByStatus();
+        //todoItemFindByAssigneeId();
+        todoItemFindByAssigneePerson();
+        //todoItemFindByUnassignedTodoItems();
+
+        //todoItemUpdate();
+        //todoItemDelete();
     }
 
     public static void todoItemCreate(){
@@ -40,7 +46,7 @@ public class Main {
             String desc = scanner.nextLine();
             System.out.println("Done or not?:");
             String strDone = scanner.nextLine();
-            boolean done = strDone.equalsIgnoreCase("done") ? true : false;
+            boolean done = strDone.equalsIgnoreCase("done");
             System.out.println("Person id:");
             int personId = scanner.nextInt();
 
@@ -77,7 +83,7 @@ public class Main {
 
             TodoItem savedItem = items.findById(id);
 
-            System.out.println("savedPerson = " + savedItem.getTodo_id() + ": " +  savedItem.getTitle());
+            System.out.println("savedItem = " + savedItem.getTodo_id() + ": " +  savedItem.getTitle());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -102,7 +108,109 @@ public class Main {
         }
     }
 
+    public static void todoItemFindByAssigneeId() {
+        try{
+            TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter person id:");
+            int personId = scanner.nextInt();
+
+            List<TodoItem> foundItems = items.findByAssignee(personId).stream().toList();
+
+            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            System.out.println("Operation is Done!");
+        }catch (SQLException e) {
+            System.out.println("MySQL DB Connection Failed.");
+        }
+    }
+
+    public static void todoItemFindByAssigneePerson() {
+        try{
+            TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter an id:");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            System.out.println("Enter a first name:");
+            String fName = scanner.nextLine();
+            System.out.println("Enter a last name:");
+            String lName = scanner.nextLine();
+
+            List<TodoItem> foundItems = items.findByAssignee(new Person(id, fName, lName)).stream().toList();
+
+            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            System.out.println("Operation is Done!");
+        }catch (SQLException e) {
+            System.out.println("MySQL DB Connection Failed.");
+        }
+    }
+
+    public static void todoItemFindByUnassignedTodoItems() {
+        try{
+            TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
+
+            List<TodoItem> foundItems = items.findByUnassignedTodoItems().stream().toList();
+
+            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            System.out.println("Operation is Done!");
+        }catch (SQLException e) {
+            System.out.println("MySQL DB Connection Failed.");
+        }
+    }
+
+
+    public static void todoItemUpdate() {
+        try{
+            TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter an id to change");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            System.out.println("Enter a title");
+            String title = scanner.nextLine();
+            System.out.println("Enter a description");
+            String desc= scanner.nextLine();
+            System.out.println("Enter a deadline");
+            String deadline= scanner.nextLine();
+            System.out.println("Done or not?:");
+            String strDone = scanner.nextLine();
+            boolean done = strDone.equalsIgnoreCase("done");
+            System.out.println("Enter a persons id");
+            int assignee_id= scanner.nextInt();
+            scanner.nextLine();
+
+            TodoItem updatedItem = items.update(new TodoItem(id, title, desc, Date.valueOf(deadline), done, assignee_id));
+
+            System.out.println("savedPerson = " + updatedItem.getTodo_id() + ": " +  updatedItem.getTitle());
+            System.out.println("Operation is Done!");
+        }
+        catch (SQLException e) {
+            System.out.println("MySQL DB Connection Failed.");
+        }
+    }
+
+    public static void todoItemDelete() {
+        try{
+            TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter an id to delete");
+            int id = scanner.nextInt();
+
+            if(items.deleteById(id)) System.out.println("Delete Success");
+            else System.out.println("Delete Failure");
+
+            System.out.println("Operation is Done!");
+        }
+        catch (SQLException e) {
+            System.out.println("MySQL DB Connection Failed.");
+        }
+    }
+
+    // ------------------------------------------------------------------------------
 
     public static void personCreate() {
         try{
@@ -201,10 +309,10 @@ public class Main {
             PeopleImpl people = new PeopleImpl(MySQLConnection.getConnection());
 
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter an id to change");
+            System.out.println("Enter an id to delete");
             int id = scanner.nextInt();
 
-            if(people.delete(id)) System.out.println("Delete Success");
+            if(people.deleteById(id)) System.out.println("Delete Success");
             else System.out.println("Delete Failure");
 
             System.out.println("Operation is Done!");

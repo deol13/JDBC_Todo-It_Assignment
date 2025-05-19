@@ -153,7 +153,7 @@ public class PeopleImpl implements People {
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean deleteById(int id) {
         String sql = "DELETE FROM person WHERE person_id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
@@ -164,7 +164,7 @@ public class PeopleImpl implements People {
             if (affectedRows > 0) return true;
 
         } catch (SQLException e) {
-            System.out.println("Error updating person");
+            System.out.println("Error deleting from person");
             e.printStackTrace();
         }
         return false;

@@ -10,5 +10,5 @@ public interface People {
     Person findById(int id);
     Collection<Person> findByName(String name);
     Person update(Person person);
-    boolean delete(int id);
+    boolean deleteById(int id);
 }
