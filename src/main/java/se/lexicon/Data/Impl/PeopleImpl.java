@@ -1,5 +1,6 @@
 package se.lexicon.Data.Impl;
 
+import se.lexicon.Data.DynamicUpdateHelper;
 import se.lexicon.Data.People;
 import se.lexicon.Model.Person;
 
@@ -121,26 +122,25 @@ public class PeopleImpl implements People {
 
     @Override
     public Person update(Person person) {
-        //Person newPerson = person;
-        String sql = "UPDATE person SET first_name = ? , last_name = ? WHERE person_id = ?";
+        String sql = DynamicUpdateHelper.PeopleUpdate(person);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
-            preparedStatement.setString(1, person.getFirst_name());
-            preparedStatement.setString(2, person.getLast_name());
-            preparedStatement.setInt(3, person.getPerson_id());
+            int index = 1;
+            if(sql.contains("first_name")) {
+                preparedStatement.setString(index, person.getFirst_name());
+                index++;
+            }
+            if(sql.contains("last_name")) {
+                preparedStatement.setString(index, person.getLast_name());
+                index++;
+            }
+            preparedStatement.setInt(index, person.getPerson_id());
+
 
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows > 0) {
                 System.out.println("Update successful");
-//                try (ResultSet resultSet = preparedStatement.getResultSet()) {
-//                    while (resultSet.next()) {
-//                        int personId = resultSet.getInt("person_id");
-//                        String first_name = resultSet.getString("first_name");
-//                        String last_name = resultSet.getString("last_name");
-//                        newPerson = new Person(personId, first_name, last_name);
-//                    }
-//                }
             }
             else System.out.println("Update failed");
 
@@ -149,7 +149,7 @@ public class PeopleImpl implements People {
             e.printStackTrace();
         }
 
-        return person;//newPerson;
+        return person;
     }
 
     @Override
@@ -169,4 +169,10 @@ public class PeopleImpl implements People {
         }
         return false;
     }
+
+
+
+
+
+
 }

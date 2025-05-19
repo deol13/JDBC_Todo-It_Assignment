@@ -1,5 +1,6 @@
 package se.lexicon.Data.Impl;
 
+import se.lexicon.Data.DynamicUpdateHelper;
 import se.lexicon.Data.TodoItems;
 import se.lexicon.Model.Person;
 import se.lexicon.Model.TodoItem;
@@ -220,15 +221,31 @@ public class TodoItemsImpl implements TodoItems {
 
     @Override
     public TodoItem update(TodoItem item) {
-        String sql = "UPDATE todo_item SET title = ? , description = ? , deadline = ? , done = ? , assignee_id = ? WHERE todo_id = ?";
+        String sql = DynamicUpdateHelper.TodoItemUpdate(item);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
-            preparedStatement.setString(1, item.getTitle());
-            preparedStatement.setString(2, item.getDescription());
-            preparedStatement.setDate(3, item.getDeadline());
-            preparedStatement.setInt(4, item.isDone() ? 1 : 0);
-            preparedStatement.setInt(5, item.getAssignee_id());
-            preparedStatement.setInt(6, item.getTodo_id());
+            int index = 1;
+            if(sql.contains("title")) {
+                preparedStatement.setString(index, item.getTitle());
+                index++;
+            }
+            if(sql.contains("description")) {
+                preparedStatement.setString(index, item.getDescription());
+                index++;
+            }
+            if(sql.contains("deadline")) {
+                preparedStatement.setDate(index, item.getDeadline());
+                index++;
+            }
+            if(sql.contains("done")) {
+                preparedStatement.setInt(index, item.isDone() ? 1 : 0);;
+                index++;
+            }
+            if(sql.contains("assignee_id")) {
+                preparedStatement.setInt(index, item.getAssignee_id());
+                index++;
+            }
+            preparedStatement.setInt(index, item.getTodo_id());
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -262,4 +279,6 @@ public class TodoItemsImpl implements TodoItems {
         }
         return false;
     }
+
+
 }

@@ -28,10 +28,9 @@ public class Main {
         //todoItemFindById();
         //todoItemFindByStatus();
         //todoItemFindByAssigneeId();
-        todoItemFindByAssigneePerson();
+        //todoItemFindByAssigneePerson();
         //todoItemFindByUnassignedTodoItems();
-
-        //todoItemUpdate();
+        todoItemUpdate();
         //todoItemDelete();
     }
 
@@ -178,11 +177,11 @@ public class Main {
             System.out.println("Done or not?:");
             String strDone = scanner.nextLine();
             boolean done = strDone.equalsIgnoreCase("done");
-            System.out.println("Enter a persons id");
+            System.out.println("Enter a persons id or -1 if you don't want a person id");
             int assignee_id= scanner.nextInt();
             scanner.nextLine();
 
-            TodoItem updatedItem = items.update(new TodoItem(id, title, desc, Date.valueOf(deadline), done, assignee_id));
+            TodoItem updatedItem = items.update(new TodoItem(id, title, desc, deadline.isEmpty() ? null : Date.valueOf(deadline), done, assignee_id));
 
             System.out.println("savedPerson = " + updatedItem.getTodo_id() + ": " +  updatedItem.getTitle());
             System.out.println("Operation is Done!");
@@ -289,9 +288,9 @@ public class Main {
             System.out.println("Enter an id to change");
             int id = scanner.nextInt();
             scanner.nextLine();
-            System.out.println("Enter a first name");
+            System.out.println("Enter a first name or leave it blank");
             String fName = scanner.nextLine();
-            System.out.println("Enter a last name");
+            System.out.println("Enter a last name or leave it blank");
             String lName= scanner.nextLine();
 
             Person updatedPerson = people.update(new Person(id, fName, lName));
