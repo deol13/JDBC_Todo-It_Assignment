@@ -24,11 +24,11 @@ public class Main {
         //personDelete();
 
         //todoItemCreate();
-        //todoItemFindAll();
+        todoItemFindAll();
         //todoItemFindById();
         //todoItemFindByStatus();
         //todoItemFindByAssigneeId();
-        todoItemFindByAssigneePerson();
+        //todoItemFindByAssigneePerson();
         //todoItemFindByUnassignedTodoItems();
 
         //todoItemUpdate();

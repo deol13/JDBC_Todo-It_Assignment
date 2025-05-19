@@ -1,7 +1,9 @@
 package se.lexicon.Data.Impl;
 
+import se.lexicon.Data.BaseFunctionality;
 import se.lexicon.Data.People;
 import se.lexicon.Model.Person;
+import se.lexicon.Model.TodoItem;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PeopleImpl implements People {
+public class PeopleImpl implements People, BaseFunctionality<Person> {
     private Connection connection;
 
     public PeopleImpl(Connection connection) { this.connection = connection; }

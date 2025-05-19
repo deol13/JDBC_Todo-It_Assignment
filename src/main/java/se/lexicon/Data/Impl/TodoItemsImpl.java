@@ -1,5 +1,6 @@
 package se.lexicon.Data.Impl;
 
+import se.lexicon.Data.BaseFunctionality;
 import se.lexicon.Data.TodoItems;
 import se.lexicon.Model.Person;
 import se.lexicon.Model.TodoItem;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class TodoItemsImpl implements TodoItems {
+public class TodoItemsImpl implements TodoItems, BaseFunctionality<TodoItem> {
     private Connection connection;
 
     public TodoItemsImpl(Connection connection) { this.connection = connection; }
