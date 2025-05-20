@@ -77,7 +77,7 @@ public class TodoItemsImpl implements TodoItems{
     }
 
     @Override
-    public TodoItem findById(int id) {
+    public TodoItem findById(Integer id) {
         TodoItem item = null;
 
         String sql = "SELECT * FROM todo_item WHERE todo_id = ?";

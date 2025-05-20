@@ -65,7 +65,7 @@ public class PeopleImpl implements People {
     }
 
     @Override
-    public Person findById(int id) {
+    public Person findById(Integer id) {
         Person person = null;
 
         String sql = "SELECT * FROM person WHERE person_id = ?";
