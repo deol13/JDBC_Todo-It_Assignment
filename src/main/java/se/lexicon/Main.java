@@ -3,6 +3,7 @@ package se.lexicon;
 import se.lexicon.DB.MySQLConnection;
 import se.lexicon.Data.Impl.PeopleImpl;
 import se.lexicon.Data.Impl.TodoItemsImpl;
+import se.lexicon.Exceptions.ExceptionHandler;
 import se.lexicon.Model.Person;
 import se.lexicon.Model.TodoItem;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -62,7 +64,9 @@ public class Main {
             System.out.println("savedItem = " + savedItem.toString());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while saving item.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in todoItemCreate");
         }
     }
 
@@ -77,7 +81,7 @@ public class Main {
             itemList.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding all items.");
         }
     }
 
@@ -95,7 +99,9 @@ public class Main {
             System.out.println("foundItem = " + foundItem.toString());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding item by id.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in todoItemFindById");
         }
     }
 
@@ -114,7 +120,7 @@ public class Main {
             foundItems.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding all items by status.");
         }
     }
 
@@ -132,7 +138,9 @@ public class Main {
             foundItems.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding all assignee id.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in todoItemFindByAssigneeId");
         }
     }
 
@@ -155,7 +163,9 @@ public class Main {
             foundItems.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding all items by assignee person.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in todoItemFindByAssigneePerson");
         }
     }
 
@@ -169,7 +179,7 @@ public class Main {
             foundItems.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding all items by unassigned.");
         }
     }
 
@@ -201,7 +211,9 @@ public class Main {
             System.out.println("Operation is Done!");
         }
         catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while updating item.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in todoItemUpdate");
         }
     }
 
@@ -220,7 +232,9 @@ public class Main {
             System.out.println("Operation is Done!");
         }
         catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while deleting item.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in todoItemDelete");
         }
     }
 
@@ -242,7 +256,7 @@ public class Main {
             System.out.println("savedPerson = " + savedPerson.toString());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while saving person.");
         }
     }
 
@@ -256,7 +270,7 @@ public class Main {
             personList.forEach(p -> System.out.println(p.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding all person's.");
         }
     }
 
@@ -274,7 +288,9 @@ public class Main {
             System.out.println("foundPerson = " + foundPerson.toString());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding person by id.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in personFindById");
         }
     }
 
@@ -295,7 +311,7 @@ public class Main {
             System.out.println("Wrong amount of input, need a fist and last name with a space between them.");
         }
         catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while finding person by name.");
         }
     }
 
@@ -319,7 +335,9 @@ public class Main {
             System.out.println("Operation is Done!");
         }
         catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while updating person.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in personUpdate");
         }
     }
 
@@ -338,7 +356,9 @@ public class Main {
             System.out.println("Operation is Done!");
         }
         catch (SQLException e) {
-            System.out.println("MySQL DB Connection Failed.");
+            ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while deleting person.");
+        } catch (InputMismatchException e) {
+            ExceptionHandler.handleExceptions(e,"Scanner error in personDelete");
         }
     }
 }

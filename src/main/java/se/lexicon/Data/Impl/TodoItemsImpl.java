@@ -2,6 +2,7 @@ package se.lexicon.Data.Impl;
 
 import se.lexicon.Data.BaseDAO;
 import se.lexicon.Data.TodoItems;
+import se.lexicon.Exceptions.ExceptionHandler;
 import se.lexicon.Model.Person;
 import se.lexicon.Model.TodoItem;
 
@@ -42,8 +43,7 @@ public class TodoItemsImpl implements TodoItems{
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error saving todo item");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Saving an item to");
         }
         return item;
     }
@@ -70,8 +70,7 @@ public class TodoItemsImpl implements TodoItems{
             }
 
         } catch (SQLException e) {
-            System.out.println("Error finding all items");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting all items from");
         }
         return items;
     }
@@ -99,8 +98,7 @@ public class TodoItemsImpl implements TodoItems{
             }
 
         } catch (SQLException e) {
-            System.out.println("Error finding item with " + id + " id");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting an item by id from");
         }
 
         return item;
@@ -130,8 +128,7 @@ public class TodoItemsImpl implements TodoItems{
             }
 
         } catch (SQLException e) {
-            System.out.println("Error finding items with status: " + status);
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting all items with a certain done status from");
         }
 
         return todoItemList;
@@ -158,8 +155,7 @@ public class TodoItemsImpl implements TodoItems{
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error finding unassigned items");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting all items by assignee id from");
         }
 
         return todoItemList;
@@ -187,8 +183,7 @@ public class TodoItemsImpl implements TodoItems{
             }
 
         } catch (SQLException e) {
-            System.out.println("Error finding unassigned items");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting all items by assignee from");
         }
 
         return todoItemList;
@@ -214,8 +209,7 @@ public class TodoItemsImpl implements TodoItems{
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error finding unassigned items");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting all items with unassigned status from");
         }
         return todoItemList;
     }
@@ -240,9 +234,8 @@ public class TodoItemsImpl implements TodoItems{
             else System.out.println("Update failed");
 
         } catch (SQLException e) {
-            System.out.println("Error updating item");
-            e.printStackTrace();
-        } // TODO: Create exception handler class
+            ExceptionHandler.handleExceptions(e, "Updating an item from");
+        }
 
         return item;
     }
@@ -259,8 +252,7 @@ public class TodoItemsImpl implements TodoItems{
             if (affectedRows > 0) return true;
 
         } catch (SQLException e) {
-            System.out.println("Error deleting from todo_item");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Deleting an item from");
         }
         return false;
     }

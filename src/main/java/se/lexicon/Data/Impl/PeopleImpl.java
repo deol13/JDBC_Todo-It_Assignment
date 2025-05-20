@@ -2,6 +2,7 @@ package se.lexicon.Data.Impl;
 
 import se.lexicon.Data.BaseDAO;
 import se.lexicon.Data.People;
+import se.lexicon.Exceptions.ExceptionHandler;
 import se.lexicon.Model.Person;
 
 import java.sql.*;
@@ -35,8 +36,7 @@ public class PeopleImpl implements People {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error saving person");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Saving new person to");
         }
         return person;
     }
@@ -58,8 +58,7 @@ public class PeopleImpl implements People {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error finding all people");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting all person entries from");
         }
         return people;
     }
@@ -83,8 +82,7 @@ public class PeopleImpl implements People {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error finding person with " + id + " id");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting a person based on id from");
         }
 
         return person;
@@ -113,8 +111,7 @@ public class PeopleImpl implements People {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error finding people with name " + name);
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Collecting all person's with a specific name from");
         }
         return people;
     }
@@ -145,8 +142,7 @@ public class PeopleImpl implements People {
             else System.out.println("Update failed");
 
         } catch (SQLException e) {
-            System.out.println("Error updating person");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Updating person to");
         }
 
         return person;//newPerson;
@@ -164,8 +160,7 @@ public class PeopleImpl implements People {
             if (affectedRows > 0) return true;
 
         } catch (SQLException e) {
-            System.out.println("Error deleting from person");
-            e.printStackTrace();
+            ExceptionHandler.handleExceptions(e, "Deleting person from");
         }
         return false;
     }
