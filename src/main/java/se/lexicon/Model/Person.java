@@ -39,4 +39,13 @@ public class Person {
     public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "person_id=" + person_id +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                '}';
+    }
 }

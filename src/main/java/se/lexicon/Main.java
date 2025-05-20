@@ -6,10 +6,14 @@ import se.lexicon.Data.Impl.TodoItemsImpl;
 import se.lexicon.Model.Person;
 import se.lexicon.Model.TodoItem;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
@@ -18,13 +22,13 @@ public class Main {
 
         //personCreate();
         //personFindAll();
-        //personFindById();
+        personFindById();
         //personFindByName();
         //personUpdate();
         //personDelete();
 
         //todoItemCreate();
-        todoItemFindAll();
+        //todoItemFindAll();
         //todoItemFindById();
         //todoItemFindByStatus();
         //todoItemFindByAssigneeId();
@@ -36,6 +40,8 @@ public class Main {
     }
 
     public static void todoItemCreate(){
+        System.out.println("Create item operation");
+
         try{
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
@@ -53,7 +59,7 @@ public class Main {
             LocalDate deadline = LocalDate.now();
             TodoItem savedItem = items.create(new TodoItem(title, desc, Date.valueOf(deadline), done, personId));
 
-            System.out.println("savedItem = " + savedItem.getTitle());
+            System.out.println("savedItem = " + savedItem.toString());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -61,12 +67,14 @@ public class Main {
     }
 
     public static void todoItemFindAll() {
+        System.out.println("Find all items operation");
+
         try {
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
             List<TodoItem> itemList = items.findAll().stream().toList();
 
-            itemList.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            itemList.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -74,6 +82,7 @@ public class Main {
     }
 
     public static void todoItemFindById(){
+        System.out.println("Find item by id operation");
         try{
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
@@ -81,9 +90,9 @@ public class Main {
             System.out.println("Enter an id");
             int id = scanner.nextInt();
 
-            TodoItem savedItem = items.findById(id);
+            TodoItem foundItem = items.findById(id);
 
-            System.out.println("savedItem = " + savedItem.getTodo_id() + ": " +  savedItem.getTitle());
+            System.out.println("foundItem = " + foundItem.toString());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -91,17 +100,18 @@ public class Main {
     }
 
     public static void todoItemFindByStatus(){
+        System.out.println("Find item by status operation");
         try{
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter done or not?:");
             String strDone = scanner.nextLine();
-            boolean done = strDone.equalsIgnoreCase("done") ? true : false;
+            boolean done = strDone.equalsIgnoreCase("done");
 
             List<TodoItem> foundItems = items.findByDoneStatus(done).stream().toList();
 
-            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            foundItems.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -109,6 +119,7 @@ public class Main {
     }
 
     public static void todoItemFindByAssigneeId() {
+        System.out.println("Find item by assignee id operation");
         try{
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
@@ -118,7 +129,7 @@ public class Main {
 
             List<TodoItem> foundItems = items.findByAssignee(personId).stream().toList();
 
-            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            foundItems.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -126,6 +137,7 @@ public class Main {
     }
 
     public static void todoItemFindByAssigneePerson() {
+        System.out.println("Find item by Assignee person operation");
         try{
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
@@ -140,7 +152,7 @@ public class Main {
 
             List<TodoItem> foundItems = items.findByAssignee(new Person(id, fName, lName)).stream().toList();
 
-            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            foundItems.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -148,20 +160,21 @@ public class Main {
     }
 
     public static void todoItemFindByUnassignedTodoItems() {
+        System.out.println("Find item by unassigned to do item operation");
         try{
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
             List<TodoItem> foundItems = items.findByUnassignedTodoItems().stream().toList();
 
-            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            foundItems.forEach(i -> System.out.println(i.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
         }
     }
 
-
     public static void todoItemUpdate() {
+        System.out.println("Update item operation");
         try{
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
@@ -184,7 +197,7 @@ public class Main {
 
             TodoItem updatedItem = items.update(new TodoItem(id, title, desc, Date.valueOf(deadline), done, assignee_id));
 
-            System.out.println("savedPerson = " + updatedItem.getTodo_id() + ": " +  updatedItem.getTitle());
+            System.out.println("savedPerson = " + updatedItem.toString());
             System.out.println("Operation is Done!");
         }
         catch (SQLException e) {
@@ -193,6 +206,7 @@ public class Main {
     }
 
     public static void todoItemDelete() {
+        System.out.println("Delete item operation");
         try{
             TodoItemsImpl items = new TodoItemsImpl(MySQLConnection.getConnection());
 
@@ -213,6 +227,7 @@ public class Main {
     // ------------------------------------------------------------------------------
 
     public static void personCreate() {
+        System.out.println("Create person operation");
         try{
             PeopleImpl people = new PeopleImpl(MySQLConnection.getConnection());
 
@@ -224,7 +239,7 @@ public class Main {
 
             Person savedPerson = people.create(new Person(fName, lName));
 
-            System.out.println("savedPerson = " + savedPerson.getFirst_name() + " " + savedPerson.getLast_name());
+            System.out.println("savedPerson = " + savedPerson.toString());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -232,12 +247,13 @@ public class Main {
     }
 
     public static void personFindAll() {
+        System.out.println("Find all people operation");
         try {
             PeopleImpl people = new PeopleImpl(MySQLConnection.getConnection());
 
             List<Person> personList = people.findAll().stream().toList();
 
-            personList.forEach(p -> System.out.println(p.getPerson_id() + ": " + p.getFirst_name() + " " + p.getLast_name()));
+            personList.forEach(p -> System.out.println(p.toString()));
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -245,6 +261,7 @@ public class Main {
     }
 
     public static void personFindById(){
+        System.out.println("Find person by id operation");
         try{
             PeopleImpl people = new PeopleImpl(MySQLConnection.getConnection());
 
@@ -252,9 +269,9 @@ public class Main {
             System.out.println("Enter an id");
             int pId = scanner.nextInt();
 
-            Person savedPerson = people.findById(pId);
+            Person foundPerson = people.findById(pId);
 
-            System.out.println("savedPerson = " + savedPerson.getPerson_id() + ": " +  savedPerson.getFirst_name() + " " + savedPerson.getLast_name());
+            System.out.println("foundPerson = " + foundPerson.toString());
             System.out.println("Operation is Done!");
         }catch (SQLException e) {
             System.out.println("MySQL DB Connection Failed.");
@@ -262,6 +279,7 @@ public class Main {
     }
 
     public static void personFindByName(){
+        System.out.println("Find people by name operation");
         try{
             PeopleImpl people = new PeopleImpl(MySQLConnection.getConnection());
 
@@ -271,7 +289,7 @@ public class Main {
 
             List<Person> personList = people.findByName(name).stream().toList();
 
-            personList.forEach(p -> System.out.println(p.getPerson_id() + ": " + p.getFirst_name() + " " + p.getLast_name()));
+            personList.forEach(p -> System.out.println(p.toString()));
             System.out.println("Operation is Done!");
         } catch (IllegalArgumentException e){
             System.out.println("Wrong amount of input, need a fist and last name with a space between them.");
@@ -282,6 +300,7 @@ public class Main {
     }
 
     public static void personUpdate(){
+        System.out.println("Update person operation");
         try{
             PeopleImpl people = new PeopleImpl(MySQLConnection.getConnection());
 
@@ -296,7 +315,7 @@ public class Main {
 
             Person updatedPerson = people.update(new Person(id, fName, lName));
 
-            System.out.println("savedPerson = " + updatedPerson.getPerson_id() + ": " + updatedPerson.getFirst_name() + " " + updatedPerson.getLast_name());
+            System.out.println("savedPerson = " + updatedPerson.toString());
             System.out.println("Operation is Done!");
         }
         catch (SQLException e) {
@@ -305,6 +324,7 @@ public class Main {
     }
 
     public static void personDelete(){
+        System.out.println("Delete person operation");
         try{
             PeopleImpl people = new PeopleImpl(MySQLConnection.getConnection());
 
