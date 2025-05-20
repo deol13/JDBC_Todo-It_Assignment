@@ -1,10 +1,10 @@
 package se.lexicon.Data.Impl;
 
+import se.lexicon.Data.BaseDAO;
 import se.lexicon.Data.People;
 import se.lexicon.Model.Person;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -153,7 +153,7 @@ public class PeopleImpl implements People {
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public boolean deleteById(Integer id) {
         String sql = "DELETE FROM person WHERE person_id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
