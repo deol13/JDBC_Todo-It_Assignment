@@ -16,7 +16,6 @@ public class TodoItemsImpl implements TodoItems{
 
     public TodoItemsImpl(Connection connection) { this.connection = connection; }
 
-    // TODO: implement email sender using java email sender
     @Override
     public TodoItem create(TodoItem item) {
         String sql = "INSERT INTO todo_item (title, description, deadline, done, assignee_id) VALUES(?,?,?,?,?)";

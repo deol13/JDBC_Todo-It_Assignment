@@ -7,6 +7,9 @@ import se.lexicon.Exceptions.ExceptionHandler;
 import se.lexicon.Model.Person;
 import se.lexicon.Model.TodoItem;
 
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,11 +23,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
-
         //personCreate();
         //personFindAll();
-        personFindById();
+        //personFindById();
         //personFindByName();
         //personUpdate();
         //personDelete();
@@ -255,6 +256,7 @@ public class Main {
 
             System.out.println("savedPerson = " + savedPerson.toString());
             System.out.println("Operation is Done!");
+            SendEMail.sendEmail("email", "JDBC todo assignment", "New person saved in the database");
         }catch (SQLException e) {
             ExceptionHandler.handleExceptions(e, "MySQL DB Connection Failed while saving person.");
         }

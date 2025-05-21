@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 
-// TODO: Create exception handler class
 public class ExceptionHandler {
     public static void handleExceptions(Exception e, String method) {
         switch (e) {
