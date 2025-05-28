@@ -1,7 +1,8 @@
 package se.lexicon.Data.Impl;
 
-import se.lexicon.Data.BaseDAO;
-import se.lexicon.Data.People;
+import org.springframework.beans.factory.annotation.Autowired;
+import se.lexicon.DB.MySQLConnection;
+import se.lexicon.Data.PersonDao;
 import se.lexicon.Model.Person;
 
 import java.sql.*;
@@ -9,15 +10,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PeopleImpl implements People {
-    private Connection connection;
-
-    public PeopleImpl(Connection connection) { this.connection = connection; }
+public class PersonDaoImpl implements PersonDao {
+    private MySQLConnection mySQLConnection;
+    @Autowired
+    public PersonDaoImpl(MySQLConnection mySQLConnection) { this.mySQLConnection = mySQLConnection; }
 
     @Override
     public Person create(Person person) {
         String sql = "INSERT INTO person (first_name, last_name) VALUES(?,?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ) {
 
             preparedStatement.setString(1, person.getFirst_name());
             preparedStatement.setString(2, person.getLast_name());
@@ -46,7 +47,7 @@ public class PeopleImpl implements People {
         List<Person> people = new ArrayList<>();
 
         String sql = "SELECT * FROM person";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -69,7 +70,7 @@ public class PeopleImpl implements People {
         Person person = null;
 
         String sql = "SELECT * FROM person WHERE person_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
 
             preparedStatement.setInt(1, id);
 
@@ -95,7 +96,7 @@ public class PeopleImpl implements People {
         List<Person> people = new ArrayList<>();
 
         String sql = "SELECT * FROM person WHERE first_name LIKE ? AND last_name LIKE ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
 
             String[] nameArr = name.split(" ");
 
@@ -124,7 +125,7 @@ public class PeopleImpl implements People {
         //Person newPerson = person;
         String sql = "UPDATE person SET first_name = ? , last_name = ? WHERE person_id = ?";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
             preparedStatement.setString(1, person.getFirst_name());
             preparedStatement.setString(2, person.getLast_name());
             preparedStatement.setInt(3, person.getPerson_id());
@@ -156,7 +157,7 @@ public class PeopleImpl implements People {
     public boolean deleteById(Integer id) {
         String sql = "DELETE FROM person WHERE person_id = ?";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
             preparedStatement.setInt(1, id);
 
             int affectedRows = preparedStatement.executeUpdate();

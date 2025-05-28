@@ -1,7 +1,7 @@
 package se.lexicon.Data.Impl;
 
-import se.lexicon.Data.BaseDAO;
-import se.lexicon.Data.TodoItems;
+import se.lexicon.DB.MySQLConnection;
+import se.lexicon.Data.TodoItemDao;
 import se.lexicon.Model.Person;
 import se.lexicon.Model.TodoItem;
 
@@ -10,16 +10,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class TodoItemsImpl implements TodoItems{
-    private Connection connection;
+public class TodoItemDaoImpl implements TodoItemDao {
+    private MySQLConnection mySQLConnection;
 
-    public TodoItemsImpl(Connection connection) { this.connection = connection; }
+    public TodoItemDaoImpl(MySQLConnection mySQLConnection) { this.mySQLConnection = mySQLConnection; }
 
-    // TODO: implement email sender using java email sender
     @Override
     public TodoItem create(TodoItem item) {
         String sql = "INSERT INTO todo_item (title, description, deadline, done, assignee_id) VALUES(?,?,?,?,?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ) {
 
             int done = item.isDone() ? 1 : 0;
 
@@ -53,7 +52,7 @@ public class TodoItemsImpl implements TodoItems{
         List<TodoItem> items = new ArrayList<>();
 
         String sql = "SELECT * FROM todo_item";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -65,7 +64,7 @@ public class TodoItemsImpl implements TodoItems{
                     boolean done = intDone == 1;
                     int personId = resultSet.getInt("assignee_id");
 
-                    items.add(new TodoItem(personId, title, desc, deadline, done, personId));
+                    items.add(new TodoItem(itemId, title, desc, deadline, done, personId));
                 }
             }
 
@@ -81,7 +80,7 @@ public class TodoItemsImpl implements TodoItems{
         TodoItem item = null;
 
         String sql = "SELECT * FROM todo_item WHERE todo_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
 
             preparedStatement.setInt(1, id);
 
@@ -112,7 +111,7 @@ public class TodoItemsImpl implements TodoItems{
         int intDone = status ? 1 : 0;
 
         String sql = "SELECT * FROM todo_item WHERE done = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
 
             preparedStatement.setInt(1, intDone);
 
@@ -142,7 +141,7 @@ public class TodoItemsImpl implements TodoItems{
         List<TodoItem> todoItemList = new ArrayList<>();
         String sql = "SELECT * FROM todo_item WHERE assignee_id = ?";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try(PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -170,7 +169,7 @@ public class TodoItemsImpl implements TodoItems{
         List<TodoItem> todoItemList = new ArrayList<>();
         String sql = "SELECT * FROM todo_item WHERE assignee_id = ?";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try(PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(1, person.getPerson_id());
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -199,7 +198,7 @@ public class TodoItemsImpl implements TodoItems{
         List<TodoItem> todoItemList = new ArrayList<>();
         String sql = "SELECT * FROM todo_item WHERE assignee_id is null";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try(PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql)) {
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -224,7 +223,7 @@ public class TodoItemsImpl implements TodoItems{
     public TodoItem update(TodoItem item) {
         String sql = "UPDATE todo_item SET title = ? , description = ? , deadline = ? , done = ? , assignee_id = ? WHERE todo_id = ?";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
             preparedStatement.setString(1, item.getTitle());
             preparedStatement.setString(2, item.getDescription());
             preparedStatement.setDate(3, item.getDeadline());
@@ -251,7 +250,7 @@ public class TodoItemsImpl implements TodoItems{
     public boolean deleteById(Integer id) {
         String sql = "DELETE FROM todo_item WHERE todo_id = ?";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql) ) {
+        try (PreparedStatement preparedStatement = mySQLConnection.getConnection().prepareStatement(sql) ) {
             preparedStatement.setInt(1, id);
 
             int affectedRows = preparedStatement.executeUpdate();
