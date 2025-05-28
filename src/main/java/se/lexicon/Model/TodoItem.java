@@ -74,4 +74,14 @@ public class TodoItem {
     public void setAssignee_id(int assignee_id) {
         this.assignee_id = assignee_id;
     }
+
+    @Override
+    public String toString() {
+        return  "id=" + todo_id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", deadline=" + deadline +
+                ", done=" + done +
+                ", assignee_id=" + assignee_id;
+    }
 }

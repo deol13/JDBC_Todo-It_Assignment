@@ -162,7 +162,7 @@ public class Main {
             LocalDate deadline = LocalDate.now();
             TodoItem savedItem = todoItemService.create(new TodoItem(title, desc, Date.valueOf(deadline), done, personId));
 
-            System.out.println("savedItem = " + savedItem.getTitle());
+            System.out.println("savedItem = " + savedItem);
             System.out.println("Operation is Done!\n");
         } catch(IllegalArgumentException e) {
             System.out.println("Error: personCreate: " + e.getMessage());
@@ -173,7 +173,7 @@ public class Main {
         try {
             List<TodoItem> itemList = todoItemService.findAll().stream().toList();
 
-            itemList.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            itemList.forEach(System.out::println);
             System.out.println("Operation is Done!\n");
         }catch (IllegalArgumentException e) {
             System.out.println("Error: todoItemFindAll: " + e.getMessage());
@@ -189,7 +189,7 @@ public class Main {
 
             TodoItem savedItem = todoItemService.findById(id);
 
-            System.out.println("savedItem = " + savedItem.getTodo_id() + ": " +  savedItem.getTitle());
+            System.out.println("savedItem = " + savedItem);
             System.out.println("Operation is Done!\n");
         }catch (IllegalArgumentException e) {
             System.out.println("Error: todoItemFindById: " + e.getMessage());
@@ -206,7 +206,7 @@ public class Main {
 
             List<TodoItem> foundItems = todoItemService.findByDoneStatus(done).stream().toList();
 
-            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            foundItems.forEach(System.out::println);
             System.out.println("Operation is Done!\n");
         }catch (IllegalArgumentException e) {
             System.out.println("Error: todoItemFindByStatus: " + e.getMessage());
@@ -222,7 +222,7 @@ public class Main {
 
             List<TodoItem> foundItems = todoItemService.findByAssignee(personId).stream().toList();
 
-            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            foundItems.forEach(System.out::println);
             System.out.println("Operation is Done!\n");
         }catch (IllegalArgumentException e) {
             System.out.println("Error: todoItemFindByAssigneeId: " + e.getMessage());
@@ -243,7 +243,7 @@ public class Main {
 
             List<TodoItem> foundItems = todoItemService.findByAssignee(new Person(id, fName, lName)).stream().toList();
 
-            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            foundItems.forEach(System.out::println);
             System.out.println("Operation is Done!\n");
         }catch (IllegalArgumentException e) {
             System.out.println("Error: todoItemFindByAssigneePerson: " + e.getMessage());
@@ -255,7 +255,7 @@ public class Main {
 
             List<TodoItem> foundItems = todoItemService.findByUnassignedTodoItems().stream().toList();
 
-            foundItems.forEach(i -> System.out.println("id: " + i.getTodo_id() + " , title: " + i.getTitle() + " , person_id: " + i.getAssignee_id()));
+            foundItems.forEach(System.out::println);
             System.out.println("Operation is Done!\n");
         }catch (IllegalArgumentException e) {
             System.out.println("Error: todoItemFindByUnassignedTodoItems: " + e.getMessage());
@@ -285,7 +285,7 @@ public class Main {
 
             TodoItem updatedItem = todoItemService.update(new TodoItem(id, title, desc, Date.valueOf(deadline), done, assignee_id));
 
-            System.out.println("savedPerson = " + updatedItem.getTodo_id() + ": " +  updatedItem.getTitle());
+            System.out.println("savedPerson = " + updatedItem);
             System.out.println("Operation is Done!\n");
         }
         catch (IllegalArgumentException e) {
@@ -323,7 +323,7 @@ public class Main {
 
             Person savedPerson = personService.create(new Person(fName, lName));
 
-            System.out.println("savedPerson = " + savedPerson.getFirst_name() + " " + savedPerson.getLast_name());
+            System.out.println("savedPerson = " + savedPerson);
             System.out.println("Operation is Done!\n");
         }catch(IllegalArgumentException e) {
             System.out.println("Error: personCreate: " + e.getMessage());
@@ -335,7 +335,7 @@ public class Main {
 
             List<Person> personList = personService.findAll().stream().toList();
 
-            personList.forEach(p -> System.out.println(p.getPerson_id() + ": " + p.getFirst_name() + " " + p.getLast_name()));
+            personList.forEach(System.out::println);
             System.out.println("Operation is Done!\n");
         }catch(IllegalArgumentException e) {
             System.out.println("Error: personFindAll: " + e.getMessage());
@@ -351,7 +351,7 @@ public class Main {
 
             Person savedPerson = personService.findById(pId);
 
-            System.out.println("savedPerson = " + savedPerson.getPerson_id() + ": " +  savedPerson.getFirst_name() + " " + savedPerson.getLast_name());
+            System.out.println("savedPerson = " + savedPerson);
             System.out.println("Operation is Done!\n");
         }catch(IllegalArgumentException e) {
             System.out.println("Error: personFindById: " + e.getMessage());
@@ -367,7 +367,7 @@ public class Main {
 
             List<Person> personList = personService.findByName(name).stream().toList();
 
-            personList.forEach(p -> System.out.println(p.getPerson_id() + ": " + p.getFirst_name() + " " + p.getLast_name()));
+            personList.forEach(System.out::println);
             System.out.println("Operation is Done!\n");
         }
         catch(IllegalArgumentException e) {
@@ -389,7 +389,7 @@ public class Main {
 
             Person updatedPerson = personService.update(new Person(id, fName, lName));
 
-            System.out.println("savedPerson = " + updatedPerson.getPerson_id() + ": " + updatedPerson.getFirst_name() + " " + updatedPerson.getLast_name());
+            System.out.println("savedPerson = " + updatedPerson);
             System.out.println("Operation is Done!\n");
         }
         catch(IllegalArgumentException e) {
